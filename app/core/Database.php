@@ -4,7 +4,7 @@ class Database {
     private $host = "localhost";
     private $db_name = "sistema_login";
     private $username = "root";
-    private $password = "root";
+    private $password = "vera230901";
     public $conn;
 
     public function getConnection(){

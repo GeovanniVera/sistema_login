@@ -1,0 +1,21 @@
+# .htaccess
+RewriteEngine On
+
+# Redirigir todas las solicitudes a index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Configurar encabezados para seguridad
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+</IfModule>
+
+# Configurar charset
+AddDefaultCharset UTF-8
+
+# Evitar acceso a archivos sensibles
+<FilesMatch "(\.env|\.gitignore|composer\.json|composer\.lock)$">
+    Deny from all
+</FilesMatch>

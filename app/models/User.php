@@ -25,7 +25,7 @@
 
         //Metodo para iniciar Sesion
         public function login(){
-            $query = "SELECT * FROM ".$this->table."WHERE email = :email LIMIT 1";
+            $query = "SELECT * FROM ".$this->table." WHERE email = :email LIMIT 1";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(":email",$this->email);
             $stmt->execute();
