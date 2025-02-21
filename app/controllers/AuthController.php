@@ -26,16 +26,29 @@ class AuthController extends BaseController{
         if($_SERVER['REQUEST_METHOD'] === "POST"){
             $email = htmlspecialchars($_POST['email']);
             $password = $_POST['password'];
+            
+            // Validaciones
+            $errores = [];
+            if ($error = Validator::required($email, 'Email')) $errores[] = $error;
+            if ($error = Validator::email($email, 'Email')) $errores[] = $error;
+            if ($error = Validator::required($password, 'Contraseña')) $errores[] = $error;
+
+            if (!empty($errores)) {
+                Session::set('error', implode('\n', $errores));
+                header('Location: /');
+                exit;
+            }
+            
             $usuario = $this->userModel->login($email, $password);
-            if($usuario){
+            
+            if($usuario['success']){
                 Session::set('usuario', [
-                    'id' => $usuario['id'],
-                    'nombre' => $usuario['nombre'],
-                    'email' => $usuario['email']
+                    'id' => $usuario['user']['id'],
+                    'nombre' => $usuario['user']['nombre'],
+                    'email' => $usuario['user']['email']
                 ]);
                 Session::regenerate(); // Prevención de fixation
-                var_dump($_SESSION);
-                exit;
+                
                 header('Location: /dashboard');
             }else{
                 Session::set('error','Credenciales Incorrectas');
@@ -44,15 +57,33 @@ class AuthController extends BaseController{
         }
     }
 
-    //procesar login
+    // Procesar registro
     public function registro(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $datos = [
-                'nombre' => htmlspecialchars($_POST['nombre']),
-                'email' => htmlspecialchars($_POST['email']),
-                'password' => $_POST['password']
-            ];
+            $nombre = htmlspecialchars($_POST['nombre']);
+            $email = htmlspecialchars($_POST['email']);
+            $password = $_POST['password'];
+            
+            // Validaciones
+            $errores = [];
+            if ($error = Validator::required($nombre, 'Nombre')) $errores[] = $error;
+            if ($error = Validator::alpha($nombre, 'Nombre')) $errores[] = $error;
+            if ($error = Validator::required($email, 'Email')) $errores[] = $error;
+            if ($error = Validator::email($email, 'Email')) $errores[] = $error;
+            if ($error = Validator::required($password, 'Contraseña')) $errores[] = $error;
+            if ($error = Validator::minLength($password, 'Contraseña', 6)) $errores[] = $error;
 
+            if (!empty($errores)) {
+                Session::set('error', implode('\\n', $errores));
+                header('Location: /registro');
+                exit;
+            }
+            
+            $datos = [
+                'nombre' => $nombre,
+                'email' => $email,
+                'password' => $password
+            ];
             
             if ($this->userModel->registrar($datos)) {
                 Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
@@ -70,7 +101,7 @@ class AuthController extends BaseController{
     }
 
     public function registroForm(): void {
-        $this->render('registro');
+        $this->render('auth/registro');
     }
 }
 

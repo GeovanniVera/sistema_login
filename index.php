@@ -22,7 +22,7 @@ switch ($request) {
             header('Location: /dashboard');
             exit();
         }
-        require_once __DIR__ . '/app/views/login.php';
+        require_once __DIR__ . '/app/views/auth/login.php';
         break;
     case '/registro':
         $authController = new AuthController();
@@ -31,6 +31,7 @@ switch ($request) {
         break;
     case '/login':
         $authController = new AuthController();
+        $authController->loginForm();
         $authController->login();
         break;
     case '/logout':
@@ -39,10 +40,10 @@ switch ($request) {
         break;
     case '/dashboard':
         if (!Session::has('usuario')) {
-            header('Location: /login');
+            header('Location: /');
             exit();
         }
-        require_once __DIR__ . '/app/views/dashboard.php';
+        require_once __DIR__ . '/app/views/auth/dashboard.php';
         break;
     case '/usuarios':
         $userController = new UserController();
