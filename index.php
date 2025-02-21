@@ -2,10 +2,19 @@
 // index.php
 require_once __DIR__ . '/app/core/Session.php';
 require_once __DIR__ . '/app/controllers/AuthController.php';
+require_once __DIR__ . '/app/controllers/UserController.php';
 
 Session::start();
 
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+//Menejar rutas dinamicas
+if (preg_match('/^\/usuario\/(\d+)$/', $request, $matches)) {
+    $id = $matches[1]; // Capturar el ID
+    $userController = new UserController();
+    $userController->verUsuario($id);
+    exit();
+}
 
 switch ($request) {
     case '/':
@@ -17,6 +26,7 @@ switch ($request) {
         break;
     case '/registro':
         $authController = new AuthController();
+        $authController->registroForm();
         $authController->registro();
         break;
     case '/login':
@@ -33,6 +43,10 @@ switch ($request) {
             exit();
         }
         require_once __DIR__ . '/app/views/dashboard.php';
+        break;
+    case '/usuarios':
+        $userController = new UserController();
+        $userController->listarUsuarios();
         break;
     default:
     http_response_code(404); // Establece el código de estado HTTP 404

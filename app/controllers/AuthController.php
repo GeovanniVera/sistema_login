@@ -4,84 +4,73 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../core/Database.php';
 require_once __DIR__ . '/../core/Session.php';
 require_once __DIR__.'/../core/Validator.php';
+require_once __DIR__.'/../abstracts/BaseController.php';
 
-class AuthController{
-    private $user;
+class AuthController extends BaseController{
+    private $userModel;
 
+    //Constructor 
     public function __construct()
     {
         $database = new Database;
-        $db = $database->getConnection();
-        $this->user = new User($db);
+        $this->userModel = new User($database->getConnection());
         Session::start();
     }
 
-    public function registro() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $errors = [];
-
-            // Validar campos
-            $errors[] = Validator::required($_POST['nombre'], 'Nombre');
-            $errors[] = Validator::alpha($_POST['nombre'], 'Nombre');
-            $errors[] = Validator::required($_POST['email'], 'Correo Electrónico');
-            $errors[] = Validator::email($_POST['email'], 'Correo Electrónico');
-            $errors[] = Validator::required($_POST['password'], 'Contraseña');
-            $errors[] = Validator::minLength($_POST['password'], 'Contraseña', 8);
-
-            // Filtrar errores nulos
-            $errors = array_filter($errors);
-
-            if (empty($errors)) {
-                $this->user->nombre = $_POST['nombre'];
-                $this->user->email = $_POST['email'];
-                $this->user->password = $_POST['password'];
-
-                if ($this->user->registrar()) {
-                    Session::set('mensaje', 'Registro exitoso. Inicia sesión.');
-                    header('Location: /login');
-                } else {
-                    Session::set('error', 'Error en el registro.');
-                }
-            } else {
-                Session::set('errors', $errors);
-            }
-        }
-        require_once __DIR__ . '/../views/registro.php';
+    public function loginForm(): void {
+        $this->render('auth/login');
     }
 
-
-    public function login() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $errors = [];
-
-            // Validar campos
-            $errors[] = Validator::required($_POST['email'], 'Correo Electrónico');
-            $errors[] = Validator::email($_POST['email'], 'Correo Electrónico');
-            $errors[] = Validator::required($_POST['password'], 'Contraseña');
-
-            // Filtrar errores nulos
-            $errors = array_filter($errors);
-
-            if (empty($errors)) {
-                $this->user->email = $_POST['email'];
-                $this->user->password = $_POST['password'];
-
-                $usuario = $this->user->login();
-                if ($usuario) {
-                    Session::set('usuario', $usuario);
-                    header('Location: /dashboard');
-                } else {
-                    Session::set('error', 'Credenciales incorrectas.');
-                }
-            } else {
-                Session::set('errors', $errors);
+    // Procesar login
+    public function login(): void {
+        if($_SERVER['REQUEST_METHOD'] === "POST"){
+            $email = htmlspecialchars($_POST['email']);
+            $password = $_POST['password'];
+            $usuario = $this->userModel->login($email, $password);
+            if($usuario){
+                Session::set('usuario', [
+                    'id' => $usuario['id'],
+                    'nombre' => $usuario['nombre'],
+                    'email' => $usuario['email']
+                ]);
+                Session::regenerate(); // Prevención de fixation
+                var_dump($_SESSION);
+                exit;
+                header('Location: /dashboard');
+            }else{
+                Session::set('error','Credenciales Incorrectas');
+                header('Location: /');
             }
         }
-        require_once __DIR__ . '/../views/login.php';
     }
-    public function logout() {
+
+    //procesar login
+    public function registro(): void {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $datos = [
+                'nombre' => htmlspecialchars($_POST['nombre']),
+                'email' => htmlspecialchars($_POST['email']),
+                'password' => $_POST['password']
+            ];
+
+            
+            if ($this->userModel->registrar($datos)) {
+                Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
+                header('Location: /');
+            } else {
+                Session::set('error', 'Error al registrar');
+                header('Location: /registro');
+            }
+        }
+    }
+
+    public function logout() : void{
         Session::destroy();
         header('Location: /');
+    }
+
+    public function registroForm(): void {
+        $this->render('registro');
     }
 }
 

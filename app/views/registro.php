@@ -36,7 +36,7 @@
                             <button type="submit" class="btn btn-success w-100">Registrarse</button>
                         </form>
                         <div class="mt-3 text-center">
-                            <a href="/login" class="text-decoration-none">¿Ya tienes cuenta? Inicia Sesión</a>
+                            <a href="/" class="text-decoration-none">¿Ya tienes cuenta? Inicia Sesión</a>
                         </div>
                     </div>
                 </div>
