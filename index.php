@@ -1,6 +1,6 @@
 <?php
 // index.php
-require __DIR__ . './../vendor/autoload.php';
+require __DIR__."./../sistema_login/index.php";
 use App\Core\Session;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
