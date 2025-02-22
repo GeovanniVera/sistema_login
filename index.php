@@ -3,6 +3,7 @@
 require_once __DIR__ . '/app/core/Session.php';
 require_once __DIR__ . '/app/controllers/AuthController.php';
 require_once __DIR__ . '/app/controllers/UserController.php';
+require_once __DIR__. '/app/controllers/InsumosController.php';
 
 Session::start();
 
@@ -48,6 +49,15 @@ switch ($request) {
     case '/usuarios':
         $userController = new UserController();
         $userController->listarUsuarios();
+        break;
+    case '/insumos':
+        $insumosController = new InsumosController;
+        $insumosController->listarInsumos();
+        break;
+    case '/nuevoInsumo':
+        $insumosController = new InsumosController;
+        $insumosController->insumoForm();
+        $insumosController->registrar();
         break;
     default:
     http_response_code(404); // Establece el código de estado HTTP 404

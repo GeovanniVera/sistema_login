@@ -1,6 +1,6 @@
 <?php
 
-interface FullCRUDInterface
+interface FullCRUDInterface 
 {
     public function crear(array $datos): bool;
     public function actualizar(int $id, array $datos): bool;
