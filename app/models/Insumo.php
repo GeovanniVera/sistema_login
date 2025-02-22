@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'./../abstracts/BaseModel.php';
+require_once __DIR__.'./../models/BaseModel.php';
 require_once __DIR__.'./../interfaces/FullCRUDInterface.php';
 
 class Insumo extends BaseModel implements FullCRUDInterface{

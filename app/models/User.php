@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . './../abstracts/BaseModel.php';
+require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../interfaces/AuthInterface.php';
 // app/models/User.php
 class User extends BaseModel implements AuthInterface

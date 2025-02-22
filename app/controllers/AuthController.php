@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../core/Database.php';
 require_once __DIR__ . '/../core/Session.php';
 require_once __DIR__.'/../core/Validator.php';
-require_once __DIR__.'/../abstracts/BaseController.php';
+require_once __DIR__.'/../controllers/BaseController.php';
 
 class AuthController extends BaseController{
     private $userModel;
