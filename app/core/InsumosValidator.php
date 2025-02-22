@@ -1,6 +1,7 @@
 <?php
 //importamos la clase generica para validaciones
-require_once __DIR__.'./../core/Validator.php';
+namespace App\Core;
+use App\Core\Validator;
 
 class InsumosValidator{
 
@@ -23,7 +24,7 @@ class InsumosValidator{
 
     public static function validarClave($clave){
         if(Validator::required($clave,'clave')){
-            return "La clave es requerido";
+            return "La clave es requerida";
         }
         if(Validator::maxLength($clave,'clave',14)){
             return "La clave no puede tener mas de 14 caracteres";

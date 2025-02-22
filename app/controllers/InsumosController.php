@@ -1,9 +1,12 @@
 <?php
-require_once __DIR__.'./../models/Insumo.php';
-require_once __DIR__.'./../core/Database.php';
-require_once __DIR__.'./../core/Session.php';
-require_once __DIR__.'./../core/InsumosValidator.php';
-require_once __DIR__.'./../controllers/BaseController.php';
+
+namespace App\Controllers;
+
+use App\Models\Insumo;
+use App\Core\Database;
+use App\Core\Session;
+use App\Core\InsumosValidator;
+use App\Controllers\BaseController;
 
 class InsumosController extends BaseController{
     private $insumo;

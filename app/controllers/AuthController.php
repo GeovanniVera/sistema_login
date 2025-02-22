@@ -1,10 +1,14 @@
 <?php
 // app/controllers/AuthController.php
-require_once __DIR__ . '/../models/User.php';
-require_once __DIR__ . '/../core/Database.php';
-require_once __DIR__ . '/../core/Session.php';
-require_once __DIR__.'/../core/Validator.php';
 require_once __DIR__.'/../controllers/BaseController.php';
+
+namespace App\Controllers;
+
+use App\Core\Session;
+use App\Core\Validator;
+use App\Core\Database;
+use App\Models\User;
+use App\Controllers\BaseController;
 
 class AuthController extends BaseController{
     private $userModel;

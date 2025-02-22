@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . './../models/BaseModel.php';
-require_once __DIR__ . './../interfaces/AuthInterface.php';
+namespace App\Models;
+
+use App\Core\Database;
+use App\Interfaces\AuthInterface;
 // app/models/User.php
 class User extends BaseModel implements AuthInterface
 {

@@ -1,4 +1,6 @@
 <?php
+namespace App\Core;
+
 // app/core/Validator.php
 class Validator {
     // Validar un campo requerido

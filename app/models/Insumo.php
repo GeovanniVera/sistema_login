@@ -1,7 +1,7 @@
 <?php
-
-require_once __DIR__.'./../models/BaseModel.php';
-require_once __DIR__.'./../interfaces/FullCRUDInterface.php';
+namespace App\Models;
+use App\Models\BaseModel;
+use App\Interfaces\FullCRUDInterface;
 
 class Insumo extends BaseModel implements FullCRUDInterface{
 
@@ -28,6 +28,7 @@ class Insumo extends BaseModel implements FullCRUDInterface{
         return $stmt->execute();
     }
 
+    /** Corregir este metodo */
     public function buscarPorId($id): array
     {
         $query = "SELECT * FROM ". $this->table." WHERE id = :id";
@@ -69,7 +70,7 @@ class Insumo extends BaseModel implements FullCRUDInterface{
     public function eliminar(int $id): bool
     {
         $this->id = filter_var($id,FILTER_VALIDATE_INT);
-        $query="DELETE FROM". $this->table . " WHERE id = $id";
+        $query="DELETE FROM ". $this->table . " WHERE id = $id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id",$this->id,PDO::PARAM_INT);
         return $stmt->execute();

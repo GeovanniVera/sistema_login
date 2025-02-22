@@ -1,4 +1,7 @@
 <?php
+namespace App\Controllers;
+use App\Interfaces\Autenticable;
+
 require_once __DIR__.'./../interfaces/Auntenticatable.php';
 abstract class BaseController implements Authenticatable {
     protected $model;

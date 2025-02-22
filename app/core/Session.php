@@ -1,4 +1,5 @@
 <?php
+namespace App\Core;
 // app/core/Session.php
 class Session {
     // Iniciar la sesión

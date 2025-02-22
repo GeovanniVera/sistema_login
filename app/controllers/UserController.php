@@ -1,9 +1,10 @@
 <?php
-    require_once __DIR__.'./../models/User.php';
-    require_once __DIR__.'./../core/Database.php';
-    require_once __DIR__.'./../core/Session.php';
-    require_once __DIR__.'./../core/Validator.php';
-    require_once __DIR__.'./../controllers/BaseController.php';
+namespace App\Controllers;
+use App\Models\User;
+use App\Core\Database;
+use App\Core\Session;
+use App\Core\Validator;
+use App\Controllers\BaseController;
     
     class UserController extends BaseController{
         //atributo del objeto Usuario

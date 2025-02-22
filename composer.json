@@ -1,0 +1,16 @@
+{
+    "name": "vera/sistema_login",
+    "description": "Proyecto Modelo Vista Controlador con PHP y Composer",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Geovanni-Vera",
+            "email": "geovanni.vera23@gmail.com"
+        }
+    ],
+    "require": {}
+}

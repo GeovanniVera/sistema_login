@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__.'./../interfaces/ReadInterface.php';
+namespace App\models;
+use App\Interfaces\ReadInterface;
+
 // app/core/Abstract/BaseModel.php
 abstract class BaseModel implements ReadInterface {
     protected $conn;
@@ -16,7 +18,7 @@ abstract class BaseModel implements ReadInterface {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    /**Nota Este metodo esta mal implementado hay que corregirlo */
     public function obtenerPorId(int $id): ?array {
         $query = "SELECT * FROM $this->table WHERE id = :id";
         $stmt = $this->conn->prepare($query);
