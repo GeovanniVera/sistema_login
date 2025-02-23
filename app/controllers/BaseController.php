@@ -16,7 +16,7 @@ abstract class BaseController implements Authenticable {
 
     // Método común para renderizar vistas
     protected function render(string $view, array $data = []): void {
-        $viewPath = __DIR__ . "/../views/$view.php";
+        $viewPath = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "$view.php";
 
     // Verificar si la vista existe
     if (!file_exists($viewPath)) {

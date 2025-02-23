@@ -1,6 +1,7 @@
 <?php
 // 1. Incluir el autoloader de Composer
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
+
 
 
 // 2. Configuración global (opcional)
@@ -36,7 +37,8 @@ try {
                 header('Location: /dashboard');
                 exit();
             }
-            require __DIR__ . '/../app/views/auth/login.php';
+            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'auth'.DIRECTORY_SEPARATOR.'login.php';
+
             break;
 
         case '/registro':
@@ -61,7 +63,7 @@ try {
                 header('Location: /');
                 exit();
             }
-            require __DIR__ . '/../app/views/auth/dashboard.php';
+            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'auth'.DIRECTORY_SEPARATOR.'dashboard.php';
             break;
 
         case '/usuarios':
@@ -82,7 +84,7 @@ try {
 
         default:
             http_response_code(404);
-            require __DIR__ . '/../app/views/404.php';
+            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'404.php';
             break;
     }
 } catch (Exception $e) {
