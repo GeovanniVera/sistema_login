@@ -25,7 +25,7 @@
                 <?php endif; ?>
 
                 <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-danger text-white">
                         <h3 class="text-center">Bienvenido, <?= htmlspecialchars($usu) ?></h3>
                     </div>
                     <div class="card-body">

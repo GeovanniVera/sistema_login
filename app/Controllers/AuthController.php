@@ -23,16 +23,16 @@ class AuthController extends BaseController
 
     public function loginForm(): void
     {
-        // Obtener mensajes de la sesión
-        $error = Session::get('error');
-        $mensaje = Session::get('mensaje');
+        // Obtener y limpiar mensajes de la sesió
+        $errores = Session::get('error', []);
+        $exito = Session::get('mensaje', '');
+        Session::delete('errores');
+        Session::delete('exito');
 
-        // Limpiar los mensajes después de obtenerlos
-        Session::delete('error');
-        Session::delete('mensaje');
-
-        // Renderizar la vista de login
-        $this->render('auth/login', ['error'=>$error, 'mensaje'=>$mensaje]);
+        $this->render('auth/login', [
+            'errores' => $errores,
+            'exito' => $exito
+        ]);
     }
 
     // Procesar login
@@ -49,8 +49,8 @@ class AuthController extends BaseController
             if ($error = Validator::required($password, 'Contraseña')) $errores[] = $error;
 
             if (!empty($errores)) {
-                Session::set('error', implode('\n', $errores));
-                header('Location: /');
+                Session::set('error',$errores);
+                header('Location: /login');
                 exit;
             }
 
@@ -63,11 +63,12 @@ class AuthController extends BaseController
                     'email' => $usuario['user']['email']
                 ]);
                 Session::regenerate(); // Prevención de fixation
-
                 header('Location: /dashboard');
+                exit;
             } else {
-                Session::set('error', 'Credenciales Incorrectas');
-                header('Location: /');
+                Session::set('error', ['Credenciales Incorrectas']);
+                header('Location: /login');
+                exit;
             }
         }
     }

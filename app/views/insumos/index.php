@@ -16,11 +16,10 @@
                     </div>
                     <div class="card-body">
                         <!-- Mensajes de éxito/error -->
-                        <?php if (Session::has('mensaje')): ?>
+                        <?php if ($isMensaje): ?>
                             <div class="alert alert-success">
-                                <?= htmlspecialchars(Session::get('mensaje')) ?>
+                                <?= htmlspecialchars($mensajeAlerta) ?>
                             </div>
-                            <?php Session::delete('mensaje'); ?>
                         <?php endif; ?>
 
                         <a href="/dashboard" class="btn btn-secondary mb-3">← Volver al Dashboard</a>

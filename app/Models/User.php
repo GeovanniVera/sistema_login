@@ -26,9 +26,9 @@ class User extends BaseModel implements AuthInterface
     {
         try {
             $usuario = $this->obtenerPorEmail($email);
-            
+
             if (!$usuario || !password_verify($password, $usuario['password'])) {
-                
+
                 return ['success' => false, 'user' => null]; // Usuario no autenticado
             }
 
@@ -57,7 +57,7 @@ class User extends BaseModel implements AuthInterface
         return $stmt->execute();
     }
 
-    public function buscarPorId($id): array
+    public function buscarPorId($id): ?array
     {
         $query = "SELECT * FROM $this->table WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -73,5 +73,22 @@ class User extends BaseModel implements AuthInterface
         $stmt->bindParam(":email", $email);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
+    }
+
+    public function eliminar(int $id): bool
+    {
+        // Validación robusta del ID
+        if ($id <= 0) {
+            throw new \InvalidArgumentException("ID inválido: debe ser un entero positivo");
+        }
+
+        // Consulta segura con placeholder
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        // Vinculación segura del parámetro
+        $stmt->bindParam(":id", $id, \PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
 }

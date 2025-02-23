@@ -50,5 +50,13 @@ class Validator {
         }
         return null;
     }
+
+    //Validar un campo entero
+    public static function isInt($value,$fieldName){
+        if(!filter_var($value,FILTER_VALIDATE_INT)){
+            return "El $fieldName debe de ser un numero entero";
+        }
+        return null;
+    }
 }
 ?>

@@ -5,8 +5,8 @@ class Database {
     private $host = "localhost";
     private $db_name = "sistema_login";
     private $username = "root";
-    private $password = "root";
-    private $port = "3307";  // Puerto 3307
+    private $password = "vera230901";
+    private $port = "3306";  // Puerto 3307
     public $conn;
 
     public function getConnection(){

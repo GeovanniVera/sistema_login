@@ -23,8 +23,16 @@ try {
     $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
     // 6. Manejar rutas dinámicas
-    if (preg_match('/^\/usuario\/(\d+)$/', $request, $matches)) {
-        $id = $matches[1]; // Capturar el ID
+    if (preg_match('/^\/usuarios\/eliminar\/(\d+)$/', $request, $matches)) { 
+        $id = $matches[1];
+        $userController = new UserController();
+        $userController->eliminarUsuario($id);
+        exit;
+    }
+
+    // Resto de rutas dinámicas (ej: ver usuario)
+    if (preg_match('/^\/usuarios\/ver\/(\d+)$/', $request, $matches)) { 
+        $id = $matches[1];
         $userController = new UserController();
         $userController->verUsuario($id);
         exit();
@@ -70,7 +78,6 @@ try {
             $userController = new UserController();
             $userController->listarUsuarios();
             break;
-
         case '/insumos':
             $insumosController = new InsumosController();
             $insumosController->listarInsumos();
@@ -84,12 +91,12 @@ try {
 
         default:
             http_response_code(404);
-            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'404.php';
+            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'errors'.DIRECTORY_SEPARATOR.'404.php';
             break;
     }
 } catch (Exception $e) {
     // Manejo de errores global
     error_log("Error en index.php: " . $e->getMessage());
     http_response_code(500);
-    echo "Ocurrió un error inesperado. Por favor, intenta nuevamente más tarde.";
+    require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'errors'.DIRECTORY_SEPARATOR.'500.php';
 }

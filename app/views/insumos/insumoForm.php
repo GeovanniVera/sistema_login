@@ -18,9 +18,8 @@
 
                     </div>
                     <div class="card-body">
-                        <?php if (Session::has('error')): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars(Session::get('error')) ?></div>
-                            <?php Session::delete('error'); ?>
+                        <?php if ($isError): ?>
+                            <div class="alert alert-danger"><?= htmlspecialchars($errorAlerta)?></div>
                         <?php endif; ?>
                         <form action="/nuevoInsumo" method="POST">
                             <div class="mb-3">

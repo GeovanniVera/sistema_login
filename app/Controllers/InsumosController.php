@@ -48,6 +48,9 @@ class InsumosController extends BaseController{
             //Redireccionamos los errores para que se muestren en la vista
             if(!empty($errores)){
                 Session::set('error', implode('/n',$errores));
+                $isError=Session::has('error');
+                $errorAlerta = Session::get('error');
+                Session::delete('error');
                 header('Location: /nuevoInsumo');
                 exit;
             }
@@ -57,13 +60,19 @@ class InsumosController extends BaseController{
                 'clave' => $clave
             ];
 
-
+            /*Posible funcion a implementar */
             if($this->insumo->crear($datos)){
                 Session::set('mensaje','Insumo Creado Correctamente' );
+                $mensajeAlerta = Session::get('mensaje');
+                $isMensaje=Session::has('mensaje');
+                Session::delete('mensaje'); 
                 header('Location: /insumos');
                 exit;
             }else{
                 Session::set('mensaje','Error al registrar al usuario');
+                $mensajeAlerta = Session::get('mensaje');
+                $isMensaje=Session::has('mensaje');
+                Session::delete('mensaje'); 
                 header('Location: /insumos');
                 exit;
             }            
