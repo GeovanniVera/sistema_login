@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -15,9 +17,10 @@
                         <h3 class="text-center">Registro de Usuario</h3>
                     </div>
                     <div class="card-body">
-                        <?php if (Session::has('error')): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars(Session::get('error')) ?></div>
-                            <?php Session::delete('error'); ?>
+                        
+                        <?php if ($isError): ?>
+                            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+
                         <?php endif; ?>
 
                         <form action="/registro" method="POST">
@@ -44,4 +47,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -1,5 +1,4 @@
 <?php
-// app/controllers/AuthController.php
 
 namespace App\Controllers;
 
@@ -9,21 +8,21 @@ use App\Core\Database;
 use App\Models\User;
 use App\Controllers\BaseController;
 
-class AuthController extends BaseController{
+class AuthController extends BaseController
+{
     private $userModel;
 
-    //Constructor 
+    // Constructor
     public function __construct()
     {
-        $database = new Database;
-        $this->userModel = new User($database->getConnection());
+        $database = new Database();
+        $conn = $database->getConnection();
+        $this->userModel = new User($conn);
         Session::start();
     }
 
-    public function loginForm(): void {
-        // Iniciar la sesión (si no se ha iniciado)
-        Session::start();
-
+    public function loginForm(): void
+    {
         // Obtener mensajes de la sesión
         $error = Session::get('error');
         $mensaje = Session::get('mensaje');
@@ -31,16 +30,18 @@ class AuthController extends BaseController{
         // Limpiar los mensajes después de obtenerlos
         Session::delete('error');
         Session::delete('mensaje');
-        
-        $this->render('auth/login');
+
+        // Renderizar la vista de login
+        $this->render('auth/login', ['error'=>$error, 'mensaje'=>$mensaje]);
     }
 
     // Procesar login
-    public function login(): void {
-        if($_SERVER['REQUEST_METHOD'] === "POST"){
+    public function login(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $email = htmlspecialchars($_POST['email']);
             $password = $_POST['password'];
-            
+
             // Validaciones
             $errores = [];
             if ($error = Validator::required($email, 'Email')) $errores[] = $error;
@@ -52,32 +53,33 @@ class AuthController extends BaseController{
                 header('Location: /');
                 exit;
             }
-            
+
             $usuario = $this->userModel->login($email, $password);
-            
-            if($usuario['success']){
+
+            if ($usuario['success']) {
                 Session::set('usuario', [
                     'id' => $usuario['user']['id'],
                     'nombre' => $usuario['user']['nombre'],
                     'email' => $usuario['user']['email']
                 ]);
                 Session::regenerate(); // Prevención de fixation
-                
+
                 header('Location: /dashboard');
-            }else{
-                Session::set('error','Credenciales Incorrectas');
+            } else {
+                Session::set('error', 'Credenciales Incorrectas');
                 header('Location: /');
             }
         }
     }
 
     // Procesar registro
-    public function registro(): void {
+    public function registro(): void
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = htmlspecialchars($_POST['nombre']);
             $email = htmlspecialchars($_POST['email']);
             $password = $_POST['password'];
-            
+
             // Validaciones
             $errores = [];
             if ($error = Validator::required($nombre, 'Nombre')) $errores[] = $error;
@@ -88,17 +90,17 @@ class AuthController extends BaseController{
             if ($error = Validator::minLength($password, 'Contraseña', 6)) $errores[] = $error;
 
             if (!empty($errores)) {
-                Session::set('error', implode('\\n', $errores));
+                Session::set('error', implode('\n', $errores));
                 header('Location: /registro');
                 exit;
             }
-            
+
             $datos = [
                 'nombre' => $nombre,
                 'email' => $email,
                 'password' => $password
             ];
-            
+
             if ($this->userModel->registrar($datos)) {
                 Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
                 header('Location: /');
@@ -109,14 +111,23 @@ class AuthController extends BaseController{
         }
     }
 
-    public function logout() : void{
+    public function logout(): void
+    {
         Session::destroy();
         header('Location: /');
     }
 
-    public function registroForm(): void {
-        $this->render('auth/registro');
+    public function registroForm(): void
+    {
+        // Obtener mensajes de la sesión
+        $error = Session::get('error');
+        $mensaje = Session::get('mensaje');
+
+        // Limpiar los mensajes después de obtenerlos
+        Session::delete('error');
+        Session::delete('mensaje');
+
+        // Renderizar la vista de registro
+        $this->render('auth/registro', ['error' => $error, 'mensaje' => $mensaje]);
     }
 }
-
-?>

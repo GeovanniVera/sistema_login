@@ -14,7 +14,7 @@ class User extends BaseModel implements AuthInterface
     private $email;
     private $password;
 
-    public function __construct(PDO $conn)
+    public function __construct(\PDO $conn)
     {
         parent::__construct($conn);
         $this->table = "usuarios"; // Define la tabla
@@ -33,7 +33,7 @@ class User extends BaseModel implements AuthInterface
             }
 
             return ['success' => true, 'user' => $usuario]; // Usuario autenticado con éxito
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error en login: " . $e->getMessage());
             return ['success' => false, 'user' => null]; // Error en autenticación
         }
@@ -63,7 +63,7 @@ class User extends BaseModel implements AuthInterface
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
     // Método específico (no está en la interfaz)
     private function obtenerPorEmail(string $email): ?array
@@ -72,6 +72,6 @@ class User extends BaseModel implements AuthInterface
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $email);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 }

@@ -18,23 +18,22 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <!-- Mensajes de sesión -->
-                <?php if (Session::has('mensaje')): ?>
+                <?php if ($mensaje): ?>
                     <div class="alert alert-success">
-                        <?= htmlspecialchars(Session::get('mensaje')) ?>
+                        <?= htmlspecialchars($mensaje) ?>
                     </div>
-                    <?php Session::delete('mensaje') ?>
                 <?php endif; ?>
 
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="text-center">Bienvenido, <?= htmlspecialchars(Session::get('usuario')['nombre']) ?></h3>
+                        <h3 class="text-center">Bienvenido, <?= htmlspecialchars($usu) ?></h3>
                     </div>
                     <div class="card-body">
                         <!-- Información del usuario -->
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <p class="mb-1"><strong>Email:</strong> <?= htmlspecialchars(Session::get('usuario')['email']) ?></p>
-                                <p><strong>ID de Usuario:</strong> <?= htmlspecialchars(Session::get('usuario')['id']) ?></p>
+                                <p class="mb-1"><strong>Email:</strong> <?= htmlspecialchars($correo) ?></p>
+                                <p><strong>ID de Usuario:</strong> <?= htmlspecialchars($idU) ?></p>
                             </div>
                         </div>
 

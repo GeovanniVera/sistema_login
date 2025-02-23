@@ -15,18 +15,18 @@
                         <h3 class="text-center">Iniciar Sesión</h3>
                     </div>
                     <div class="card-body">
-                        <?php if ($error): ?>
+                        <?php if (isset($error) && $error): ?>
                             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                         <?php endif; ?>
 
-                        <?php if ($mensaje): ?>
+                        <?php if (isset($mensaje) && $mensaje): ?>
                             <div class="alert alert-success"><?= htmlspecialchars($mensaje) ?></div>
                         <?php endif; ?>
 
                         <form action="/login" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" name="email" required>
+                                <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
