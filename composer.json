@@ -3,7 +3,7 @@
     "description": "Proyecto Modelo Vista Controlador con PHP y Composer",
     "autoload": {
         "psr-4": {
-            "App\\": "./app/"
+            "App\\": "./app"
         }
     },
     "authors": [

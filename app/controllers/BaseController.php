@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
-use App\Interfaces\Autenticable;
+use App\Interfaces\Authenticable; 
+use App\Core\Session;
 
-require_once __DIR__.'./../interfaces/Auntenticatable.php';
-abstract class BaseController implements Authenticatable {
+abstract class BaseController implements Authenticable {
     protected $model;
 
     // Método obligatorio para autenticación

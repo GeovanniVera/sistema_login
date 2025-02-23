@@ -1,6 +1,7 @@
 <?php
 namespace App\Interfaces;
-interface Authenticatable
+
+interface Authenticable
 {
     public function checkAuth(): void;
 }

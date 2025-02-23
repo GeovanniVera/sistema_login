@@ -15,14 +15,12 @@
                         <h3 class="text-center">Iniciar Sesión</h3>
                     </div>
                     <div class="card-body">
-                        <?php if (Session::has('error')): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars(Session::get('error')) ?></div>
-                            <?php Session::delete('error'); ?>
+                        <?php if ($error): ?>
+                            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                         <?php endif; ?>
 
-                        <?php if (Session::has('mensaje')): ?>
-                            <div class="alert alert-success"><?= htmlspecialchars(Session::get('mensaje')) ?></div>
-                            <?php Session::delete('mensaje'); ?>
+                        <?php if ($mensaje): ?>
+                            <div class="alert alert-success"><?= htmlspecialchars($mensaje) ?></div>
                         <?php endif; ?>
 
                         <form action="/login" method="POST">

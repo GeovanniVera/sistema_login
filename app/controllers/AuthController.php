@@ -1,6 +1,5 @@
 <?php
 // app/controllers/AuthController.php
-require_once __DIR__.'/../controllers/BaseController.php';
 
 namespace App\Controllers;
 
@@ -22,6 +21,17 @@ class AuthController extends BaseController{
     }
 
     public function loginForm(): void {
+        // Iniciar la sesión (si no se ha iniciado)
+        Session::start();
+
+        // Obtener mensajes de la sesión
+        $error = Session::get('error');
+        $mensaje = Session::get('mensaje');
+
+        // Limpiar los mensajes después de obtenerlos
+        Session::delete('error');
+        Session::delete('mensaje');
+        
         $this->render('auth/login');
     }
 

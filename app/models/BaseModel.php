@@ -7,7 +7,7 @@ abstract class BaseModel implements ReadInterface {
     protected $conn;
     protected $table;
 
-    public function __construct(PDO $conn) {
+    public function __construct(\PDO $conn) {
         $this->conn = $conn;
     }
 
@@ -16,7 +16,7 @@ abstract class BaseModel implements ReadInterface {
         $query = "SELECT * FROM $this->table";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     /**Nota Este metodo esta mal implementado hay que corregirlo */
     public function obtenerPorId(int $id): ?array {
@@ -24,7 +24,7 @@ abstract class BaseModel implements ReadInterface {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 }
 ?>

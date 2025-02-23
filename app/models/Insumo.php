@@ -9,7 +9,7 @@ class Insumo extends BaseModel implements FullCRUDInterface{
     private $clave;
     private $nombre;
 
-    public function __construct(PDO $conn)
+    public function __construct(\PDO $conn)
     {
         parent::__construct($conn);
         $this->table = "insumo"; // Define la tabla
@@ -34,9 +34,9 @@ class Insumo extends BaseModel implements FullCRUDInterface{
         $query = "SELECT * FROM ". $this->table." WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $this->id = filter_var($id,FILTER_VALIDATE_INT);
-        $stmt->bindParam(":id",$this->id,PDO::PARAM_INT);
+        $stmt->bindParam(":id",$this->id,\PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
     public function actualizar(int $id, array $datos): bool {
@@ -61,7 +61,7 @@ class Insumo extends BaseModel implements FullCRUDInterface{
                 $stmt->bindValue(":" . $key, htmlspecialchars($value)); // Sanitize each value
             }
         }
-        $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(":id", $this->id, \PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -72,7 +72,7 @@ class Insumo extends BaseModel implements FullCRUDInterface{
         $this->id = filter_var($id,FILTER_VALIDATE_INT);
         $query="DELETE FROM ". $this->table . " WHERE id = $id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id",$this->id,PDO::PARAM_INT);
+        $stmt->bindParam(":id",$this->id,\PDO::PARAM_INT);
         return $stmt->execute();
     }
 
