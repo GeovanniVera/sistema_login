@@ -104,7 +104,7 @@ class AuthController extends BaseController
 
             if ($this->userModel->registrar($datos)) {
                 Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
-                header('Location: /');
+                header('Location: /login');
             } else {
                 Session::set('error', 'Error al registrar');
                 header('Location: /registro');

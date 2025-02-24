@@ -38,8 +38,11 @@
                         </div>
 
                         <!-- Menú de acciones -->
+                        <div class=" mt-3 mb-3">
+                            <h3 class="title text-center">Modulo de Inventario </h3>
+                        </div>
                         <div class="row row-cols-1 row-cols-md-3 g-4">
-                            <!-- Gestión de Insumos -->
+                            <!-- Modulo Inventario -->
                             <div class="col">
                                 <div class="card h-100 card-link" onclick="window.location='/insumos'">
                                     <div class="card-body text-center">
@@ -49,7 +52,29 @@
                                 </div>
                             </div>
 
-                            <!-- Gestión de Usuarios -->
+                            <div class="col">
+                                <div class="card h-100 card-link" onclick="window.location='/inventario'">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">📖 Insumos</h5>
+                                        <p class="card-text">Administra el Inventario de los insumos</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="card h-100 card-link" onclick="window.location='/inventario'">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title"> 🛒 Proveedores</h5>
+                                        <p class="card-text">Proveedores de Insumos</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" mt-3 mb-3">
+                            <h3 class="title text-center">Modulo de Usuarios </h3>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+                            <!-- Gestión de Usuarios-->
                             <div class="col">
                                 <div class="card h-100 card-link" onclick="window.location='/usuarios'">
                                     <div class="card-body text-center">
@@ -58,6 +83,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col">
+                                <div class="card h-100 card-link" onclick="window.location='/usuarios'">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">👨🏻‍🏫 roles</h5>
+                                        <p class="card-text">Administra los roles</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class=" mt-3 mb-3">
+                            <h3 class="title text-center">Otras Opciones </h3>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
 
                             <!-- Cerrar Sesión -->
                             <div class="col">
