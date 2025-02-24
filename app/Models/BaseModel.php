@@ -18,8 +18,8 @@ abstract class BaseModel implements ReadInterface {
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-    /**Nota Este metodo esta mal implementado hay que corregirlo */
-    public function obtenerPorId(int $id): ?array {
+    
+    public function buscarPorId(int $id): ?array {
         $query = "SELECT * FROM $this->table WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id);

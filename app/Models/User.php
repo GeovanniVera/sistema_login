@@ -27,15 +27,19 @@ class User extends BaseModel implements AuthInterface
         try {
             $usuario = $this->obtenerPorEmail($email);
 
-            if (!$usuario || !password_verify($password, $usuario['password'])) {
-
-                return ['success' => false, 'user' => null]; // Usuario no autenticado
+            if (!$usuario) {
+                return ['success' => false, 'successPass' =>false,'user' => null];
             }
 
-            return ['success' => true, 'user' => $usuario]; // Usuario autenticado con éxito
+            if(!password_verify($password, $usuario['password'])){
+                return['success'=>true,'succesPass'=>false,'user'=>null];
+            }
+
+            return ['success' => true, 'successPass' =>true,'user' => $usuario];
+             // Usuario autenticado con éxito
         } catch (\Exception $e) {
             error_log("Error en login: " . $e->getMessage());
-            return ['success' => false, 'user' => null]; // Error en autenticación
+            return ['success' => false, 'succesPass'=> false,'user' => null]; // Error en autenticación
         }
     }
 
@@ -57,14 +61,7 @@ class User extends BaseModel implements AuthInterface
         return $stmt->execute();
     }
 
-    public function buscarPorId($id): ?array
-    {
-        $query = "SELECT * FROM $this->table WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
-        $stmt->execute();
-        return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
-    }
+    
     // Método específico (no está en la interfaz)
     private function obtenerPorEmail(string $email): ?array
     {

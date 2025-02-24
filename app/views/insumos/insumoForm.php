@@ -18,8 +18,8 @@
 
                     </div>
                     <div class="card-body">
-                        <?php if ($isError): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars($errorAlerta)?></div>
+                        <?php if ($error): ?>
+                            <div class="alert alert-danger"><?= htmlspecialchars($error)?></div>
                         <?php endif; ?>
                         <form action="/nuevoInsumo" method="POST">
                             <div class="mb-3">
@@ -30,6 +30,17 @@
                                 <label for="email" class="form-label">Clave</label>
                                 <input type="text" class="form-control" name="clave" required>
                             </div>
+                            <div class="mb-3">
+                                <select name="id_inventario" id="inventario" class="form-select ">
+                                    
+                                    <option value="" disabled selected>---Seleccionar un Inventario---</option>
+                                    <?php foreach ($data['inventarios'] as $inventario) : ?>
+                                        <option value="<?php echo $inventario['id'] ?>"><?php echo $inventario['nombre'] ?></option>
+                                    <?php endforeach ;?>
+
+                                </select>            
+                            </div>
+
 
                             <button type="submit" class="btn btn-success w-100">Registrar</button>
                         <a href="/insumos" class="btn btn-danger mt-3 w-100">Cancelar</a>

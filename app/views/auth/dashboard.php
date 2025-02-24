@@ -18,22 +18,16 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <!-- Mensajes de sesión -->
-                <?php if ($mensaje): ?>
-                    <div class="alert alert-success">
-                        <?= htmlspecialchars($mensaje) ?>
-                    </div>
-                <?php endif; ?>
-
                 <div class="card shadow">
                     <div class="card-header bg-danger text-white">
-                        <h3 class="text-center">Bienvenido, <?= htmlspecialchars($usu) ?></h3>
+                        <h3 class="text-center">Bienvenido, <?= htmlspecialchars($nombre) ?></h3>
                     </div>
                     <div class="card-body">
                         <!-- Información del usuario -->
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <p class="mb-1"><strong>Email:</strong> <?= htmlspecialchars($correo) ?></p>
-                                <p><strong>ID de Usuario:</strong> <?= htmlspecialchars($idU) ?></p>
+                                <p class="mb-1"><strong>Email:</strong> <?= htmlspecialchars($email) ?></p>
+                                <p><strong>ID de Usuario:</strong> <?= htmlspecialchars($id) ?></p>
                             </div>
                         </div>
 
@@ -55,7 +49,7 @@
                             <div class="col">
                                 <div class="card h-100 card-link" onclick="window.location='/inventario'">
                                     <div class="card-body text-center">
-                                        <h5 class="card-title">📖 Insumos</h5>
+                                        <h5 class="card-title">📖 Inventarios</h5>
                                         <p class="card-text">Administra el Inventario de los insumos</p>
                                     </div>
                                 </div>

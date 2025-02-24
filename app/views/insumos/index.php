@@ -15,10 +15,11 @@
                         <h3 class="text-center">Insumos Registrados</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Mensajes de éxito/error -->
-                        <?php if ($isMensaje): ?>
+
+                        <!-- Mensajes de éxito -->
+                        <?php if ($data['mensaje']): ?>
                             <div class="alert alert-success">
-                                <?= htmlspecialchars($mensajeAlerta) ?>
+                                <?= htmlspecialchars($data['mensaje']) ?>
                             </div>
                         <?php endif; ?>
 
@@ -32,15 +33,18 @@
                                     <th>ID</th>
                                     <th>Clave</th>
                                     <th>Nombre</th>
+                                    <th>Inventario</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($data as $insumo): ?>
+                                <?php foreach ($data['insumos'] as $insumo): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($insumo['id']) ?></td>
                                         <td><?= htmlspecialchars($insumo['clave']) ?></td>
                                         <td><?= htmlspecialchars($insumo['nombre']) ?></td>
+                                        <td><?= htmlspecialchars($insumo['id_inventario']) ?></td>
+
                                         <td>
                                             <a 
                                                 href="/insumos/<?= htmlspecialchars($insumo['id']) ?>" 

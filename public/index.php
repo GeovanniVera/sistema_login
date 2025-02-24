@@ -67,11 +67,8 @@ try {
             break;
 
         case '/dashboard':
-            if (!Session::has('usuario')) {
-                header('Location: /');
-                exit();
-            }
-            require __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'auth'.DIRECTORY_SEPARATOR.'dashboard.php';
+            $authController = new AuthController();
+            $authController->dashboard();
             break;
 
         case '/usuarios':

@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Session;
-use App\Core\Validator;
+use App\Validators\UsuariosValidator;
 use App\Core\Database;
 use App\Models\User;
 use App\Controllers\BaseController;
@@ -25,28 +25,30 @@ class AuthController extends BaseController
     {
         // Obtener y limpiar mensajes de la sesió
         $errores = Session::get('error', []);
-        $exito = Session::get('mensaje', '');
-        Session::delete('errores');
+        $mensaje = Session::get('mensaje');
+
+        Session::delete('error');
         Session::delete('exito');
 
         $this->render('auth/login', [
             'errores' => $errores,
-            'exito' => $exito
+            'mensaje' => $mensaje
         ]);
     }
 
     // Procesar login
     public function login(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") 
+        {
             $email = htmlspecialchars($_POST['email']);
             $password = $_POST['password'];
 
             // Validaciones
             $errores = [];
-            if ($error = Validator::required($email, 'Email')) $errores[] = $error;
-            if ($error = Validator::email($email, 'Email')) $errores[] = $error;
-            if ($error = Validator::required($password, 'Contraseña')) $errores[] = $error;
+            if($error = UsuariosValidator::validarLogin($password,$email)) $errores[] = $error;
+
+            
 
             if (!empty($errores)) {
                 Session::set('error',$errores);
@@ -56,26 +58,38 @@ class AuthController extends BaseController
 
             $usuario = $this->userModel->login($email, $password);
 
-            if ($usuario['success']) {
-                Session::set('usuario', [
-                    'id' => $usuario['user']['id'],
-                    'nombre' => $usuario['user']['nombre'],
-                    'email' => $usuario['user']['email']
-                ]);
-                Session::regenerate(); // Prevención de fixation
-                header('Location: /dashboard');
-                exit;
-            } else {
-                Session::set('error', ['Credenciales Incorrectas']);
+
+            if(!$usuario['success']){
+                Session::set('error', ['Usuario no encontrado']);
                 header('Location: /login');
                 exit;
             }
+
+            if(!$usuario['successPass']){
+                Session::set('error', ['Contraseña Incorrecta']);
+                header('Location: /login');
+                exit;
+            }
+
+            Session::set('usuario', [
+                        'id' => $usuario['user']['id'],
+                        'nombre' => $usuario['user']['nombre'],
+                        'email' => $usuario['user']['email']
+                    ]);
+            Session::regenerate(); // Prevención de fixation
+            header("Location: /dashboard");
+        
         }
     }
 
+    public function dashboard(){
+        $this->checkAuth();
+        $usuarioInfo = Session::get('usuario');
+        $this->render("auth/dashboard",$usuarioInfo);
+    }
+
     // Procesar registro
-    public function registro(): void
-    {
+    public function registro(): void{
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = htmlspecialchars($_POST['nombre']);
             $email = htmlspecialchars($_POST['email']);
@@ -83,12 +97,8 @@ class AuthController extends BaseController
 
             // Validaciones
             $errores = [];
-            if ($error = Validator::required($nombre, 'Nombre')) $errores[] = $error;
-            if ($error = Validator::alpha($nombre, 'Nombre')) $errores[] = $error;
-            if ($error = Validator::required($email, 'Email')) $errores[] = $error;
-            if ($error = Validator::email($email, 'Email')) $errores[] = $error;
-            if ($error = Validator::required($password, 'Contraseña')) $errores[] = $error;
-            if ($error = Validator::minLength($password, 'Contraseña', 6)) $errores[] = $error;
+            if ($error = UsuariosValidator::validarRegistro($nombre,$password,$email)) $errores[] = $error;
+
 
             if (!empty($errores)) {
                 Session::set('error', implode('\n', $errores));
@@ -100,15 +110,18 @@ class AuthController extends BaseController
                 'nombre' => $nombre,
                 'email' => $email,
                 'password' => $password
-            ];
+            ];  
 
-            if ($this->userModel->registrar($datos)) {
-                Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
-                header('Location: /login');
-            } else {
+            if(!$this->userModel->registrar($datos)){
                 Session::set('error', 'Error al registrar');
                 header('Location: /registro');
+                exit;
             }
+
+            Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
+                header('Location: /login');
+                exit;
+
         }
     }
 

@@ -1,7 +1,7 @@
 <?php
 //importamos la clase generica para validaciones
-namespace App\Core;
-use App\Core\Validator;
+namespace App\Validators;
+use App\Validators\Validator;
 
 class InsumosValidator{
 
@@ -31,6 +31,17 @@ class InsumosValidator{
         }
         return null;
         
+    }
+
+    public static function validarInt($value,$fieldName){
+        if(Validator::isInt($value,$fieldName)){
+            return "El parametro $fieldName no es un entero";
+        }
+        if(Validator::required($value,$fieldName)){
+            return "El parametro $fieldName es Obligatorio";
+        }
+        return null;
+
     }
 
 

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Core\Database;
 use App\Core\Session;
-use App\Core\Validator;
+use App\Validators\Validator;
 use App\Controllers\BaseController;
 
 class UserController extends BaseController
@@ -88,15 +88,12 @@ class UserController extends BaseController
 
         try {
             $resultado = $this->userModel->eliminar($id);
-
-            if ($resultado) {
-                Session::set('mensaje', 'Usuario eliminado correctamente');
-            } else {
-                Session::set('error', 'Error al eliminar el usuario');
-            }
+            if(!$resultado) Session::set('error', 'Error al eliminar el usuario');
+            Session::set('mensaje', 'Usuario eliminado correctamente');
         } catch (\Exception $e) {
             Session::set('error', 'Error en la base de datos: ' . $e->getMessage());
         }
+        
         header('Location: /usuarios');
         exit;
     }
