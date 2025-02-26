@@ -18,12 +18,12 @@
                     </div>
                     <div class="card-body">
                         <!-- Mensajes de éxito/error -->
-                        <?php if (isset($isMensaje) && $isMensaje): ?>
+                        <?php if (isset($mensaje) && $mensaje): ?>
                             <div class="alert alert-success">
                                 <?= htmlspecialchars($mensaje) ?>
                             </div>
                         <?php endif; ?>
-                        <?php if (isset($isError) && $isError): ?>
+                        <?php if (isset($error) && $error): ?>
                             <div class="alert alert-danger">
                                 <?= htmlspecialchars($error) ?>
                             </div>
@@ -43,7 +43,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($data['usuarios'] as $usuario): ?>
+                                <?php if(!empty($data['usuarios'])) :?>
+                                    <?php foreach ($data['usuarios'] as $usuario): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($usuario['id']) ?></td>
                                         <td><?= htmlspecialchars($usuario['nombre']) ?></td>
@@ -62,6 +63,11 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
+                                <?php else :?>
+                                    <tr>
+                                        No Hay Usuarios
+                                    </tr>
+                                <?php endif; ?>    
                             </tbody>
                         </table>
                     </div>

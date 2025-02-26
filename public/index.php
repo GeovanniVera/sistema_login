@@ -30,8 +30,29 @@ try {
         exit;
     }
 
-    // Resto de rutas dinámicas (ej: ver usuario)
     if (preg_match('/^\/usuarios\/ver\/(\d+)$/', $request, $matches)) { 
+        $id = $matches[1];
+        $userController = new UserController();
+        $userController->verUsuario($id);
+        exit();
+    }
+    // Resto de rutas dinámicas (ej: ver usuario)
+    if (preg_match('/^\/insumos\/ver\/(\d+)$/', $request, $matches)) { 
+        $id = $matches[1];
+        $insumosController = new InsumosController();
+        $insumosController->ver($id);
+        exit();
+    }
+
+    if (preg_match('/^\/insumos\/eliminar\/(\d+)$/', $request, $matches)) { 
+        $id = $matches[1];
+        $insumosController = new InsumosController();
+        $insumosController->eliminar($id);
+        exit;
+    }
+    
+
+    if (preg_match('/^\/insumos\/actualizar\/(\d+)$/', $request, $matches)) { 
         $id = $matches[1];
         $userController = new UserController();
         $userController->verUsuario($id);

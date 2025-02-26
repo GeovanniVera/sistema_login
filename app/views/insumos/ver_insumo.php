@@ -27,10 +27,14 @@
                             <p><?= htmlspecialchars($data['nombre']) ?></p>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label"><strong>Correo:</strong></label>
-                            <p><?= htmlspecialchars($data['email']) ?></p>
+                            <label class="form-label"><strong>Clave:</strong></label>
+                            <p><?= htmlspecialchars($data['clave']) ?></p>
                         </div>
-                        <a href="/usuarios" class="btn btn-primary">← Volver a Usuarios</a>
+                        <div class="mb-3">
+                            <label class="form-label"><strong>ID Inventario:</strong></label>
+                            <p><?= htmlspecialchars($data['id_inventario']) ?></p>
+                        </div>
+                        <a href="/insumos" class="btn btn-primary">← Volver a Insumos</a>
                     </div>
                 </div>
             </div>

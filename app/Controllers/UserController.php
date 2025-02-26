@@ -7,6 +7,7 @@ use App\Core\Database;
 use App\Core\Session;
 use App\Validators\Validator;
 use App\Controllers\BaseController;
+use App\Models\Usuario;
 
 class UserController extends BaseController
 {
@@ -16,7 +17,7 @@ class UserController extends BaseController
     public function __construct()
     {
         $database = new Database;
-        $this->userModel = new User($database->getConnection());
+        $this->userModel = new Usuario($database->getConnection());
         Session::start();
     }
 
@@ -26,18 +27,20 @@ class UserController extends BaseController
         //Revisar que el usuario este logueado
         $this->checkAuth();
 
-        $usuarios = $this->userModel->listar();
+        $usuarios = $this->userModel->obtenerTodos();
 
         $error = Session::get('error');
         $isError = !empty($error);
 
-        if ($isError) {
-            Session::delete('error');
-        }
+        $mensaje = Session::get('mensaje');
+        $isMensaje = !empty($mensaje); 
+
+        if ($isError) Session::delete('error');
+        if($isMensaje) Session::delete('mensaje');
         //implementar la vista
         $this->render('usuarios/index', [
             'usuarios' => $usuarios,
-            'isError' => $isError,
+            'mensaje' => $mensaje,
             'error' => $error
         ]);
     }
@@ -73,7 +76,7 @@ class UserController extends BaseController
     {
 
 
-        $this->checkAuth(); // 🔐 Solo usuarios autenticados
+        $this->checkAuth(); 
 
         $errores = [];
         // Validación del ID

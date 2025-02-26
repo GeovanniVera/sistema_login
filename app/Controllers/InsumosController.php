@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Insumo;
-use App\Core\Database;
 use App\Core\Session;
 use App\Validators\InsumosValidator;
 use App\Controllers\BaseController;
@@ -15,10 +14,8 @@ class InsumosController extends BaseController{
     //constructor 
     public function __construct()
     {
-        $database = new Database();
-        $db = $database->getConnection();
-        $this->insumo = new Insumo($db);
-        $this->invetario = new Inventario($db);
+        $this->insumo = new Insumo();
+        $this->invetario = new Inventario();
         Session::start();
     }
 
@@ -30,7 +27,7 @@ class InsumosController extends BaseController{
             $mensaje = Session::get('mensaje');
             Session::delete('mensaje'); 
         }
-        $insumos=$this->insumo->listar();
+        $insumos=$this->insumo->obtenerTodos();
         $this->render('insumos/index', ['insumos'=>$insumos,'mensaje'=>$mensaje]);
     }
 
@@ -41,7 +38,7 @@ class InsumosController extends BaseController{
             $error = Session::get('error');
             Session::delete('error');
         }
-        $inventarios = $this->invetario->listar();
+        $inventarios = $this->invetario->obtenerTodos();
         $this->render('insumos/insumoForm',['inventarios'=>$inventarios,'error'=>$error]);
     }
 
@@ -85,6 +82,60 @@ class InsumosController extends BaseController{
                 exit;
 
         }
+    }
+
+    public function eliminar($id): void
+    {
+
+        $this->checkAuth(); 
+
+        $errores = [];
+        // Validación del ID
+        if ($error = insumosValidator::validarInt($id, 'ID')) $errores[] = $error;
+
+        if (!empty($errores)) {
+            Session::set('error', implode('\n', $errores));
+            header('Location: /insumos');
+            exit;
+        }
+
+        try {
+            $resultado = $this->insumo->eliminar($id);
+            if(!$resultado) Session::set('error', 'Error al eliminar el insumo');
+            Session::set('mensaje', 'Insumo eliminado correctamente');
+        } catch (\Exception $e) {
+            Session::set('error', 'Error en la base de datos: ' . $e->getMessage());
+        }
+        
+        header('Location: /insumos');
+        exit;
+    }
+
+    public function ver($id)
+    {
+        //Revisar que el usuario este logueado
+        $this->checkAuth();
+
+        // Validaciones
+        $errores = [];
+        if ($error = InsumosValidator::validarInt($id, 'ID de insumo')) $errores[] = $error;
+       
+        if (!empty($errores)) {
+            Session::set('error', implode('\n', $errores));
+            header('Location: /insumos');
+            exit;
+        }
+
+        $insumo = $this->insumo->buscarPorId($id);
+
+        if (!$insumo) {
+            Session::set('error', 'Usuario no encontrado');
+            header("Location: /insumos");
+            exit;
+        }
+
+        //implementar la vista
+        $this->render('insumos/ver_insumo', $insumo);
     }
 
     

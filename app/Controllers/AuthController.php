@@ -4,20 +4,19 @@ namespace App\Controllers;
 
 use App\Core\Session;
 use App\Validators\UsuariosValidator;
-use App\Core\Database;
-use App\Models\User;
 use App\Controllers\BaseController;
+use App\Models\Autenticable;
+use App\Models\Usuario;
 
 class AuthController extends BaseController
 {
     private $userModel;
-
+    private $autenticationModel;
     // Constructor
     public function __construct()
     {
-        $database = new Database();
-        $conn = $database->getConnection();
-        $this->userModel = new User($conn);
+        $this->userModel = new Usuario();
+        $this->autenticationModel = new Autenticable();
         Session::start();
     }
 
@@ -56,7 +55,7 @@ class AuthController extends BaseController
                 exit;
             }
 
-            $usuario = $this->userModel->login($email, $password);
+            $usuario = $this->autenticationModel->verificarCredenciales($email,$password);
 
 
             if(!$usuario['success']){
@@ -71,10 +70,11 @@ class AuthController extends BaseController
                 exit;
             }
 
+            
             Session::set('usuario', [
-                        'id' => $usuario['user']['id'],
-                        'nombre' => $usuario['user']['nombre'],
-                        'email' => $usuario['user']['email']
+                        'id' => $usuario['usuario']['id'],
+                        'nombre' => $usuario['usuario']['nombre'],
+                        'email' => $usuario['usuario']['email']
                     ]);
             Session::regenerate(); // Prevención de fixation
             header("Location: /dashboard");
@@ -112,7 +112,7 @@ class AuthController extends BaseController
                 'password' => $password
             ];  
 
-            if(!$this->userModel->registrar($datos)){
+            if(!$this->userModel->crear($datos)){
                 Session::set('error', 'Error al registrar');
                 header('Location: /registro');
                 exit;

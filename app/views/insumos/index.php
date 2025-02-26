@@ -15,8 +15,8 @@
                         <h3 class="text-center">Insumos Registrados</h3>
                     </div>
                     <div class="card-body">
-
                         <!-- Mensajes de éxito -->
+                         <?php $insumos = $data['insumos']?>
                         <?php if ($data['mensaje']): ?>
                             <div class="alert alert-success">
                                 <?= htmlspecialchars($data['mensaje']) ?>
@@ -38,7 +38,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($data['insumos'] as $insumo): ?>
+                                <?php foreach ($insumos as $insumo): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($insumo['id']) ?></td>
                                         <td><?= htmlspecialchars($insumo['clave']) ?></td>
@@ -47,10 +47,22 @@
 
                                         <td>
                                             <a 
-                                                href="/insumos/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                href="/insumos/ver/<?= htmlspecialchars($insumo['id']) ?>" 
                                                 class="btn btn-sm btn-info"
                                             >
                                             Ver Detalles
+                                            </a>
+                                            <a 
+                                                href="/insumos/eliminar/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                class="btn btn-sm btn-danger"
+                                            >
+                                            Eliminar
+                                            </a>
+                                            <a 
+                                                href="/insumos/actualizar/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                class="btn btn-sm btn-warning"
+                                            >
+                                            Actualizar
                                             </a>
                                         </td>
                                     </tr>
