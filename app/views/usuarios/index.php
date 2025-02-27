@@ -30,6 +30,7 @@
                         <?php endif; ?>
 
 
+
                         <a href="/dashboard" class="btn btn-secondary mb-3">← Volver al Dashboard</a>
 
                         <!-- Tabla de usuarios -->
@@ -43,19 +44,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if(!empty($data['usuarios'])) :?>
-                                    <?php foreach ($data['usuarios'] as $usuario): ?>
+
+                                <?php if(!empty($usuarios)) :?>
+                                    <?php foreach ($usuarios as $usuario): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($usuario['id']) ?></td>
-                                        <td><?= htmlspecialchars($usuario['nombre']) ?></td>
-                                        <td><?= htmlspecialchars($usuario['email']) ?></td>
+                                        <td><?= htmlspecialchars($usuario->getId()) ?></td>
+                                        <td><?= htmlspecialchars($usuario->getNombre()) ?></td>
+                                        <td><?= htmlspecialchars($usuario->getEmail()) ?></td>
                                         <td>
                                             <a
-                                                href="/usuarios/ver/<?= htmlspecialchars($usuario['id']) ?>"
+                                                href="/usuarios/ver/<?= htmlspecialchars($usuario->getId())?>"
                                                 class="btn btn-sm btn-info">
                                                 Ver Detalles
                                             </a>
-                                            <a href="/usuarios/eliminar/<?= htmlspecialchars($usuario['id']) ?>"
+                                            <a href="/usuarios/eliminar/<?= htmlspecialchars($usuario->getId()) ?>"
                                                 class="btn btn-sm btn-danger"
                                                 onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
                                                 Eliminar

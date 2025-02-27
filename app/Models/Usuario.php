@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Dao\AutenticationDao;
 use App\Dao\UsuarioDao;
 use App\Interfaces\UsuarioCRUDInterface;
 use PDOException;
@@ -12,27 +13,33 @@ use InvalidArgumentException;
 
 class Usuario implements UsuarioCRUDInterface
 {
-    private ?int $id;
-    private string $nombre;
-    private string $email;
-    private string $password;
+  
 
-    private UsuarioDao $dao;
+    private  $dao;
+    private $daoAuth;
 
-    public function __construct(UsuarioDao $dao)
-    {
-        $this->dao = $dao;
+    public function __construct( private string $nombre = "", private string $email = "", private string $password = "" , private ?int $id = 0)
+    {   
+        
+        $this->nombre = $nombre;
+        $this->email = $email;
+        $this->password = $password;
+        $this->id = $id; 
+         
+        $this->dao = new UsuarioDao;
     }
 
+
     // Getters y Setters
-    public function getId(): ?int
+
+    public function getId():?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
-        $this->id = $id;
+        $this->nombre = $id;
     }
 
     public function getNombre(): string
@@ -81,12 +88,14 @@ class Usuario implements UsuarioCRUDInterface
     public function crear(array $datos): bool
     {
         try {
+            $this->daoAuth = new AutenticationDao();
             $this->setNombre($datos['nombre']);
             $this->setEmail($datos['email']);
             $this->setPassword($datos['password']);
 
+
             // Enviar el objeto Usuario al DAO
-            return $this->dao->crear($this);
+            return $this->daoAuth->crear($this);
         } catch (PDOException $e) {
             throw new RuntimeException("Error al crear el usuario: " . $e->getMessage());
         }
@@ -134,6 +143,7 @@ class Usuario implements UsuarioCRUDInterface
     public function actualizar(int $id, array $datos): bool
     {
         try {
+            $this->daoAuth = new AutenticationDao();
             $this->setNombre($datos['nombre']);
             $this->setEmail($datos['email']);
             if (isset($datos['password'])) {
@@ -141,7 +151,7 @@ class Usuario implements UsuarioCRUDInterface
             }
 
             // Enviar el objeto Usuario al DAO
-            return $this->dao->actualizar($id, $this);
+            return $this->daoAuth->actualizar($id, $this);
         } catch (PDOException $e) {
             throw new RuntimeException("Error al actualizar el usuario: " . $e->getMessage());
         }
@@ -176,6 +186,13 @@ class Usuario implements UsuarioCRUDInterface
             return $this->dao->eliminar($id);
         } catch (PDOException $e) {
             throw new RuntimeException("Error al eliminar el usuario: " . $e->getMessage());
+        }
+    }
+    public function obtenerEmail(string $email):?object{
+        try{
+            return $this->dao->obtenerPorEmail($email);
+        }catch(PDOException $e){
+            throw new RuntimeException("Error al recuperar el usuario: ". $e->getMessage());
         }
     }
 }

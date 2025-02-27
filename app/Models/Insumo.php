@@ -11,13 +11,17 @@ class Insumo implements FullCRUDInterface
     private ?int $id;
     private string $nombre;
     private string $clave;
-    private int $idInventario;
+    private ?int $idInventario;
 
     private InsumoDao $dao;
 
-    public function __construct(InsumoDao $dao)
+    public function __construct($id = 0, string $nombre = "", string $clave = "", ?int $idInventario = 0)
     {
-        $this->dao = new $dao;
+        $this->id=$id;
+        $this->nombre=$nombre;
+        $this->clave = $clave;
+        $this->idInventario= $idInventario;
+        $this->dao = new InsumoDao();
     }
     /*Getters and Setters */
 
@@ -90,9 +94,9 @@ class Insumo implements FullCRUDInterface
     /**
      * Obtener un isumo de la base de datos por id
      * @param int $id el id del usuario que se va a buscar
-     * @return array|null 
+     * @return object|null 
      */
-    public function buscarPorId(int $id): ?array
+    public function buscarPorId(int $id): ?object
     {
         try{
             return $this->dao->buscarPorId($id);

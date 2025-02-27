@@ -12,12 +12,8 @@ use App\Core\Session;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use App\Controllers\InsumosController;
-use App\Dao\InsumoDao;
-use App\Dao\UsuarioDao;
 use App\Models\Autenticable;
-use App\Models\Insumo;
-use App\Models\Inventario;
-use App\Models\Usuario;
+
 
 // 4. Iniciar la sesión
 
@@ -31,38 +27,28 @@ try {
     // 6. Manejar rutas dinámicas
     if (preg_match('/^\/usuarios\/eliminar\/(\d+)$/', $request, $matches)) {
         $id = $matches[1];
-        $userDao = new UsuarioDao();
-        $userModel = new Usuario($userDao);
-        $userController = new UserController($userModel);
+        $userController = new UserController();
         $userController->eliminarUsuario($id);
         exit;
     }
 
     if (preg_match('/^\/usuarios\/ver\/(\d+)$/', $request, $matches)) {
         $id = $matches[1];
-        $userDao = new UsuarioDao();
-        $userModel = new Usuario($userDao);
-        $userController = new UserController($userModel);
+        $userController = new UserController();
         $userController->verUsuario($id);
         exit();
     }
     // Resto de rutas dinámicas (ej: ver usuario)
     if (preg_match('/^\/insumos\/ver\/(\d+)$/', $request, $matches)) {
         $id = $matches[1];
-        $insumoDao = new InsumoDao();
-        $insumoModel = new Insumo($insumoDao);
-        $inventarioModel = new Inventario;
-        $insumosController = new InsumosController($insumoModel, $inventarioModel);
+        $insumosController = new InsumosController();
         $insumosController->ver($id);
         exit();
     }
 
     if (preg_match('/^\/insumos\/eliminar\/(\d+)$/', $request, $matches)) {
         $id = $matches[1];
-        $insumoDao = new InsumoDao();
-        $insumoModel = new Insumo($insumoDao);
-        $inventarioModel = new Inventario;
-        $insumosController = new InsumosController($insumoModel, $inventarioModel);
+        $insumosController = new InsumosController();
         $insumosController->eliminar($id);
         exit;
     }
@@ -70,10 +56,7 @@ try {
 
     if (preg_match('/^\/insumos\/actualizar\/(\d+)$/', $request, $matches)) {
         $id = $matches[1];
-        $insumoDao = new InsumoDao();
-        $insumoModel = new Insumo($insumoDao);
-        $inventarioModel = new Inventario;
-        $insumosController = new InsumosController($insumoModel, $inventarioModel);
+        $insumosController = new InsumosController();
         $insumosController->ver($id);
         exit();
     }
@@ -90,58 +73,43 @@ try {
             break;
 
         case '/registro':
-            $userDao = new UsuarioDao();
-            $userModel = new Usuario($userDao);
             $authModel = new Autenticable;
-            $authController = new AuthController($userModel, $authModel);
+            $authController = new AuthController();
             $authController->registroForm();
             $authController->registro();
             break;
 
         case '/login':
-            $userDao = new UsuarioDao();
-            $userModel = new Usuario($userDao);
             $authModel = new Autenticable;
-            $authController = new AuthController($userModel, $authModel);
+            $authController = new AuthController();
             $authController->loginForm();
             $authController->login();
             break;
 
         case '/logout':
-            $userDao = new UsuarioDao();
-            $userModel = new Usuario($userDao);
             $authModel = new Autenticable;
-            $authController = new AuthController($userModel, $authModel);
+            $authController = new AuthController( );
             $authController->logout();
             break;
 
         case '/dashboard':
-            $userDao = new UsuarioDao();
-            $userModel = new Usuario($userDao);
             $authModel = new Autenticable;
-            $authController = new AuthController($userModel, $authModel);
+            $authController = new AuthController();
             $authController->dashboard();
             break;
 
         case '/usuarios':
-            $userDao = new UsuarioDao();
-            $userModel = new Usuario($userDao);
-            $userController = new UserController($userModel);
+            
+            $userController = new UserController();
             $userController->listarUsuarios();
             break;
         case '/insumos':
-            $insumoDao = new InsumoDao();
-            $insumoModel = new Insumo($insumoDao);
-            $inventarioModel = new Inventario;
-            $insumosController = new InsumosController($insumoModel, $inventarioModel);
+            $insumosController = new InsumosController();
             $insumosController->listarInsumos();
             break;
 
         case '/nuevoInsumo':
-            $insumoDao = new InsumoDao();
-            $insumoModel = new Insumo($insumoDao);
-            $inventarioModel = new Inventario;
-            $insumosController = new InsumosController($insumoModel, $inventarioModel);
+            $insumosController = new InsumosController();
             $insumosController->insumoForm();
             $insumosController->registrar();
             break;

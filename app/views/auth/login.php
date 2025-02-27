@@ -30,11 +30,11 @@
                         <form action="/login" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                                <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" >
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" required>
+                                <input type="password" class="form-control" name="password">
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
                         </form>

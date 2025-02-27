@@ -12,6 +12,8 @@ class Autenticable implements AuthInterface{
     }
 
     public function verificarCredenciales($email,$password):?array{
+
         return $this->dao->verificarCredenciales($email,$password);
     }
+    
 }

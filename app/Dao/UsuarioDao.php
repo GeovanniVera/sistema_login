@@ -12,13 +12,14 @@ class UsuarioDao extends BaseDao
         parent::__construct("usuarios");
     }
     //Metodo especifico para usuario
-    public function obtenerPorEmail(string $email): ?array
+    public function obtenerPorEmail(string $email): ?object
     {
         $query = "SELECT * FROM " . $this->tabla . " WHERE email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(":email", htmlspecialchars($email));
         $stmt->execute();
         $datos = $stmt->fetch(\PDO::FETCH_ASSOC); // <- retorna un arreglo si existe y un false si no existe
+       
         if($datos){
             return $this->mapearAObjeto($datos);
         }
@@ -26,14 +27,20 @@ class UsuarioDao extends BaseDao
 
         return null;
     }
-
+ //Este metodo mapea el arreglo para el id es para la busqueda
     protected function mapearAObjeto(array $datos): object
     {
-        return new Usuario(
-            $datos['id'],
+        $usuario =  new Usuario(
+            
             $datos['nombre'],
-            $datos['email']
+            $datos['email'],
+            $datos['password'],
+            $datos['id']
         );
+
+        return $usuario;
+
+         
     }
 
     protected function mapearAArreglo(object $objeto): array
@@ -44,6 +51,7 @@ class UsuarioDao extends BaseDao
 
         return [
             'id' => $objeto->getId(),
+            'password' => $objeto->getPassword(),
             'nombre' => $objeto->getNombre(),
             'email' => $objeto->getEmail(),
         ];

@@ -17,22 +17,24 @@
                         </h3>
                     </div>
                     <div class="card-body">
+                    
+
                         <!-- Mostrar detalles -->
                         <div class="mb-3">
                             <label class="form-label"><strong>ID:</strong></label>
-                            <p><?= htmlspecialchars($data['id']) ?></p>
+                            <p><?= htmlspecialchars($insumo->getId()) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Nombre:</strong></label>
-                            <p><?= htmlspecialchars($data['nombre']) ?></p>
+                            <p><?= htmlspecialchars($insumo->getNombre()) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Clave:</strong></label>
-                            <p><?= htmlspecialchars($data['clave']) ?></p>
+                            <p><?= htmlspecialchars($insumo->getClave()) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>ID Inventario:</strong></label>
-                            <p><?= htmlspecialchars($data['id_inventario']) ?></p>
+                            <p><?= htmlspecialchars($insumo->getIdInventario()) ?></p>
                         </div>
                         <a href="/insumos" class="btn btn-primary">← Volver a Insumos</a>
                     </div>

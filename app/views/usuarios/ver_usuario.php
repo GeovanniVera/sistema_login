@@ -20,15 +20,15 @@
                         <!-- Mostrar detalles -->
                         <div class="mb-3">
                             <label class="form-label"><strong>ID:</strong></label>
-                            <p><?= htmlspecialchars($data['id']) ?></p>
+                            <p><?= htmlspecialchars($usuario->getId()) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Nombre:</strong></label>
-                            <p><?= htmlspecialchars($data['nombre']) ?></p>
+                            <p><?= htmlspecialchars($usuario->getNombre()) ?></p>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"><strong>Correo:</strong></label>
-                            <p><?= htmlspecialchars($data['email']) ?></p>
+                            <p><?= htmlspecialchars($usuario->getEmail()) ?></p>
                         </div>
                         <a href="/usuarios" class="btn btn-primary">← Volver a Usuarios</a>
                     </div>

@@ -13,10 +13,12 @@ class InsumoDao extends BaseDao{
     //Aqui implementa los datos para este tipo de conexion a base de datos
     protected function mapearAObjeto(array $datos): object
     {
+       
         return new Insumo(
             $datos['id'],
             $datos['nombre'],
-            $datos['email']
+            $datos['clave'],
+            $datos['id_inventario']
         );
     }
 
@@ -29,7 +31,8 @@ class InsumoDao extends BaseDao{
         return [
             'id' => $objeto->getId(),
             'nombre' => $objeto->getNombre(),
-            'email' => $objeto->getEmail(),
+            'clave' => $objeto->getClave(),
+            'idInventario' => $objeto->getIdInventario()
         ];
     }   
 }

@@ -38,28 +38,29 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <?php foreach ($insumos as $insumo): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($insumo['id']) ?></td>
-                                        <td><?= htmlspecialchars($insumo['clave']) ?></td>
-                                        <td><?= htmlspecialchars($insumo['nombre']) ?></td>
-                                        <td><?= htmlspecialchars($insumo['id_inventario']) ?></td>
+                                        <td><?= htmlspecialchars($insumo->getId()) ?></td>
+                                        <td><?= htmlspecialchars($insumo->getClave()) ?></td>
+                                        <td><?= htmlspecialchars($insumo->getNombre()) ?></td>
+                                        <td><?= htmlspecialchars($insumo->getIdInventario()) ?></td>
 
                                         <td>
                                             <a 
-                                                href="/insumos/ver/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                href="/insumos/ver/<?= htmlspecialchars($insumo->getId()) ?>" 
                                                 class="btn btn-sm btn-info"
                                             >
                                             Ver Detalles
                                             </a>
                                             <a 
-                                                href="/insumos/eliminar/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                href="/insumos/eliminar/<?= htmlspecialchars($insumo->getId()) ?>" 
                                                 class="btn btn-sm btn-danger"
                                             >
                                             Eliminar
                                             </a>
                                             <a 
-                                                href="/insumos/actualizar/<?= htmlspecialchars($insumo['id']) ?>" 
+                                                href="/insumos/actualizar/<?= htmlspecialchars($insumo->getId()) ?>" 
                                                 class="btn btn-sm btn-warning"
                                             >
                                             Actualizar

@@ -8,15 +8,16 @@ use App\Controllers\BaseController;
 use App\Models\Autenticable;
 use App\Models\Usuario;
 
+include __DIR__ . "/../helpers/funciones.php";
 class AuthController extends BaseController
 {
     private $userModel;
     private $autenticationModel;
     // Constructor
-    public function __construct(Usuario $usuario, Autenticable $authModel)
+    public function __construct()
     {
-        $this->userModel = $usuario;
-        $this->autenticationModel = $authModel;
+        $this->userModel = new Usuario();
+        $this->autenticationModel = new Autenticable();
         Session::start();
     }
 
@@ -27,7 +28,7 @@ class AuthController extends BaseController
         $mensaje = Session::get('mensaje');
 
         Session::delete('error');
-        Session::delete('exito');
+        Session::delete('mensaje');
 
         $this->render('auth/login', [
             'errores' => $errores,
@@ -38,58 +39,64 @@ class AuthController extends BaseController
     // Procesar login
     public function login(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === "POST") 
-        {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $email = htmlspecialchars($_POST['email']);
             $password = $_POST['password'];
-
+            
             // Validaciones
             $errores = [];
-            if($error = UsuariosValidator::validarLogin($password,$email)) $errores[] = $error;
+            if ($error = UsuariosValidator::validarLogin($password, $email)) {
+                foreach($error as $err){
+                    $errores[]=$err;
+                }
+            }
 
-            
+
 
             if (!empty($errores)) {
-                Session::set('error',$errores);
+                Session::set('error', $errores);
                 header('Location: /login');
                 exit;
             }
 
-            $usuario = $this->autenticationModel->verificarCredenciales($email,$password);
+            $usuario = $this->autenticationModel->verificarCredenciales($email, $password);
 
 
-            if(!$usuario['success']){
+            if (!$usuario['success']) {
                 Session::set('error', ['Usuario no encontrado']);
                 header('Location: /login');
                 exit;
             }
 
-            if(!$usuario['successPass']){
+            if (!$usuario['successPass']) {
                 Session::set('error', ['Contraseña Incorrecta']);
                 header('Location: /login');
                 exit;
             }
 
-            
+
             Session::set('usuario', [
-                        'id' => $usuario['usuario']['id'],
-                        'nombre' => $usuario['usuario']['nombre'],
-                        'email' => $usuario['usuario']['email']
-                    ]);
+                'id' => $usuario['usuario']->getId(),
+                'nombre' => $usuario['usuario']->getNombre(),
+                'email' => $usuario['usuario']->getEmail()
+            ]);
+
+
             Session::regenerate(); // Prevención de fixation
             header("Location: /dashboard");
-        
         }
     }
 
-    public function dashboard(){
+    public function dashboard()
+    {
         $this->checkAuth();
         $usuarioInfo = Session::get('usuario');
-        $this->render("auth/dashboard",$usuarioInfo);
+        $this->render("auth/dashboard", $usuarioInfo);
     }
 
     // Procesar registro
-    public function registro(): void{
+    public function registro(): void
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = htmlspecialchars($_POST['nombre']);
             $email = htmlspecialchars($_POST['email']);
@@ -97,11 +104,15 @@ class AuthController extends BaseController
 
             // Validaciones
             $errores = [];
-            if ($error = UsuariosValidator::validarRegistro($nombre,$password,$email)) $errores[] = $error;
-
+            if ($error = UsuariosValidator::validarRegistro($nombre, $password, $email)) {
+                foreach($error as $err){
+                    $errores[]=$err;
+                }
+            }
+           
 
             if (!empty($errores)) {
-                Session::set('error', implode('\n', $errores));
+                Session::set('error', $errores);
                 header('Location: /registro');
                 exit;
             }
@@ -110,18 +121,19 @@ class AuthController extends BaseController
                 'nombre' => $nombre,
                 'email' => $email,
                 'password' => $password
-            ];  
+            ];
+           
+            $usuario = $this->userModel->crear($datos);
 
-            if(!$this->userModel->crear($datos)){
+            if (!$usuario) {
                 Session::set('error', 'Error al registrar');
                 header('Location: /registro');
                 exit;
             }
 
             Session::set('mensaje', '¡Registro exitoso! Inicia sesión');
-                header('Location: /login');
-                exit;
-
+            header('Location: /login');
+            exit;
         }
     }
 
@@ -135,13 +147,11 @@ class AuthController extends BaseController
     {
         // Obtener mensajes de la sesión
         $error = Session::get('error');
-        $mensaje = Session::get('mensaje');
 
         // Limpiar los mensajes después de obtenerlos
         Session::delete('error');
         Session::delete('mensaje');
-
         // Renderizar la vista de registro
-        $this->render('auth/registro', ['error' => $error, 'mensaje' => $mensaje]);
+        $this->render('auth/registro', ['error' => $error]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Validators;
 
 use App\Validators\Validator;
+use App\Models\Usuario;
 
 class UsuariosValidator
 {
@@ -17,8 +18,18 @@ class UsuariosValidator
         }
         if (Validator::minLength($email, $fieldName, 3)) {
             return "los caracteres especiales deben del $fieldName deben de ser 3";
-        }
+        };
+        
+        
+
         return null;
+    }
+    private static function existeEmail($email){
+        $userEmail = new Usuario();
+        if (empty($userEmail->obtenerEmail($email))) {
+            return false;
+        }
+        return true;
     }
     //Valida Contraseñas
     private static function validarContraseña($password, $fieldName)
@@ -45,12 +56,16 @@ class UsuariosValidator
     //Validacion de Registro
     public static function validarRegistro($nombre,$password,$email){
         $errores=[];
-        if($error = self::validarEmail($email,'Email')){
-            $error[] = $error;
-        }
         if($error = self::validarNombre($nombre,'Nombre')){
             $errores[] = $error;
         }
+        if($error = self::validarEmail($email,'Email')){
+            $errores[] = $error;
+        }
+        if (self::existeEmail($email)){
+            $error = "El Email ya esta registrado";
+            $errores[]=$error;
+        };
         
         if($error=self::validarContraseña($password,'Contraseña')){
             $errores[]=$error;
@@ -68,6 +83,11 @@ class UsuariosValidator
         if($error = self::validarContraseña($password,'Contraseña') ){
             $errores[]=$error;
         }
+        
+        if (!self::existeEmail($email)){
+            $error = "El Email no existe";
+            $errores[]=$error;
+        };
         return $errores;
     }
     

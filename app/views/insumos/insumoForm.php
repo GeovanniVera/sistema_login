@@ -18,6 +18,7 @@
 
                     </div>
                     <div class="card-body">
+                        <?php var_dump($inventarios) ?>
                         <?php if ($error): ?>
                             <div class="alert alert-danger"><?= htmlspecialchars($error)?></div>
                         <?php endif; ?>
@@ -34,8 +35,8 @@
                                 <select name="id_inventario" id="inventario" class="form-select ">
                                     
                                     <option value="" disabled selected>---Seleccionar un Inventario---</option>
-                                    <?php foreach ($data['inventarios'] as $inventario) : ?>
-                                        <option value="<?php echo $inventario['id'] ?>"><?php echo $inventario['nombre'] ?></option>
+                                    <?php foreach ($inventarios as $inventario) : ?>
+                                        <option value="<?php echo $inventario->getId() ?>"><?php echo $inventario->getNombre() ?></option>
                                     <?php endforeach ;?>
 
                                 </select>            

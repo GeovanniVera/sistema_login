@@ -17,9 +17,11 @@
                         <h3 class="text-center">Registro de Usuario</h3>
                     </div>
                     <div class="card-body">
-                        
-                        <?php if ($isError): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+
+                        <?php if ($error): ?>
+                            <?php foreach ($error as $err): ?>
+                                <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+                            <?php endforeach; ?>
 
                         <?php endif; ?>
 

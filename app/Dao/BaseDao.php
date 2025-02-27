@@ -6,7 +6,6 @@ use App\Interfaces\DaoInterface;
 use App\Core\Database;
 use PDOException;
 use RuntimeException;
-
 abstract class BaseDao implements DaoInterface
 {
     protected $conn;

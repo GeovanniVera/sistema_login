@@ -7,21 +7,21 @@ use App\Core\Session;
 use App\Validators\InsumosValidator;
 use App\Controllers\BaseController;
 use App\Models\Inventario;
+include __DIR__."/../helpers/funciones.php";
 
 class InsumosController extends BaseController{
     private $insumo;
     private $invetario;
     //constructor 
-    public function __construct(Insumo $insumo, Inventario $inventario)
+    public function __construct()
     {
-        $this->insumo = $insumo;
-        $this->invetario = $inventario;
+        $this->insumo = new Insumo();
+        $this->invetario = new Inventario();
         Session::start();
     }
 
     public function listarInsumos(){
         $this->checkAuth();
-        $mensaje = null;
         //Si existen un mensaje de exito
         if(Session::has('mensaje')){
             $mensaje = Session::get('mensaje');
@@ -135,7 +135,7 @@ class InsumosController extends BaseController{
         }
 
         //implementar la vista
-        $this->render('insumos/ver_insumo', $insumo);
+        $this->render('insumos/ver_insumo', ["insumo"=>$insumo]);
     }
 
     
