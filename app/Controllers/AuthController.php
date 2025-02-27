@@ -13,10 +13,10 @@ class AuthController extends BaseController
     private $userModel;
     private $autenticationModel;
     // Constructor
-    public function __construct()
+    public function __construct(Usuario $usuario, Autenticable $authModel)
     {
-        $this->userModel = new Usuario();
-        $this->autenticationModel = new Autenticable();
+        $this->userModel = $usuario;
+        $this->autenticationModel = $authModel;
         Session::start();
     }
 

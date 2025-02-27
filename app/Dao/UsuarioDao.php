@@ -3,6 +3,7 @@
 namespace App\Dao;
 
 use App\Dao\BaseDao;
+use App\Models\Usuario;
 
 class UsuarioDao extends BaseDao
 {
@@ -17,11 +18,34 @@ class UsuarioDao extends BaseDao
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(":email", htmlspecialchars($email));
         $stmt->execute();
+        $datos = $stmt->fetch(\PDO::FETCH_ASSOC); // <- retorna un arreglo si existe y un false si no existe
+        if($datos){
+            return $this->mapearAObjeto($datos);
+        }
 
-        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC); // <- retorna un arreglo si existe y un false si no existe
 
-        var_dump($usuario);
+        return null;
+    }
 
-        return $usuario == null ? null : $usuario; 
+    protected function mapearAObjeto(array $datos): object
+    {
+        return new Usuario(
+            $datos['id'],
+            $datos['nombre'],
+            $datos['email']
+        );
+    }
+
+    protected function mapearAArreglo(object $objeto): array
+    {
+        if (!$objeto instanceof Usuario) {
+            throw new \InvalidArgumentException("El objeto no es una instancia de Usuario");
+        }
+
+        return [
+            'id' => $objeto->getId(),
+            'nombre' => $objeto->getNombre(),
+            'email' => $objeto->getEmail(),
+        ];
     }
 }

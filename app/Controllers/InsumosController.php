@@ -12,10 +12,10 @@ class InsumosController extends BaseController{
     private $insumo;
     private $invetario;
     //constructor 
-    public function __construct()
+    public function __construct(Insumo $insumo, Inventario $inventario)
     {
-        $this->insumo = new Insumo();
-        $this->invetario = new Inventario();
+        $this->insumo = $insumo;
+        $this->invetario = $inventario;
         Session::start();
     }
 

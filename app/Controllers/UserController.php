@@ -14,10 +14,10 @@ class UserController extends BaseController
     //atributo del objeto Usuario
     private $userModel;
 
-    public function __construct()
+    public function __construct(Usuario $usuario)
     {
         $database = new Database;
-        $this->userModel = new Usuario($database->getConnection());
+        $this->userModel = $usuario;
         Session::start();
     }
 
@@ -69,7 +69,7 @@ class UserController extends BaseController
         }
 
         //implementar la vista
-        $this->render('usuarios/ver_usuario', $usuario);
+        $this->render('usuarios/ver_usuario', [$usuario]);
     }
 
     public function eliminarUsuario($id): void
